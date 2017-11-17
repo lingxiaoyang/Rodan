@@ -22,7 +22,7 @@ from rodan.models.workflowjobcoordinateset import WorkflowJobCoordinateSet
 from rodan.models.workflowjobgroupcoordinateset import WorkflowJobGroupCoordinateSet
 
 from guardian.shortcuts import assign_perm
-from rest_framework.compat import get_model_name
+# from rest_framework.compat import get_model_name
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission, User, Group
@@ -36,6 +36,11 @@ import traceback
 import getpass
 import subprocess
 
+# Compatibility for Django Rest Framework 3.2.5
+try:
+    from rest_framework.compat import _resolve_model
+except ImportError:
+    from rest_framework.compat import get_model_name as _resolve_model
 
 @receiver(post_migrate)
 def add_view_user_permission(sender, **kwargs):
@@ -375,4 +380,3 @@ def assign_perms_user_userpreference(sender, instance, created, raw, using, upda
             group = Group.objects.get_or_create(name="view_user_permission")[0]
             instance.groups.add(group)
             assign_perm('view_user', group, instance)
-

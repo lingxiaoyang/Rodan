@@ -28,12 +28,16 @@ class UserList(generics.ListCreateAPIView):
     _ignore_model_permissions = True
     serializer_class = UserListSerializer
 
+    # changed from MethodFilter() to CharFilter()
     class filter_class(django_filters.FilterSet):
-        username__in = django_filters.MethodFilter()
+        # username__in = django_filters.MethodFilter()
+        username__in = django_filters.CharFilter(method='filter_username__in')
 
-        def filter_username__in(self, q, v):
+        # def filter_username__in(self, q, v):
+        def filter_username__in(self, q, n, v):
             vs = v.split(',')
-            return q.filter(username__in=vs)
+            # return q.filter(username__in=vs)
+            return q.filter(**{n: vs})
 
         class Meta:
             model = User 

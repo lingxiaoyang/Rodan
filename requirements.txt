@@ -9,9 +9,9 @@ django-cors-headers==2.1.0
 django-extensions==1.9.7
 django-filter==0.11.0
 django-guardian==1.4.9
-django-picklefield==0.3.1
-django-sortedm2m==1.1.1
-django-websocket-redis==0.4.4
+django-picklefield==1.0.0
+django-sortedm2m==1.5.0
+django-websocket-redis==0.5.1
 djangorestframework==3.2.5
 djoser==0.4.0
 ecdsa==0.11
