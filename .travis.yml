@@ -1,4 +1,11 @@
 language: python
+cache: pip
+matrix:
+    include:
+      - os: linux
+        sudo: required
+        python: 2.7
+    
 # branches:
 #     only:
 #         - develop
@@ -6,8 +13,13 @@ language: python
 #     submodules: false
 # services: 
 #     - rabbitmq
-python:
-    - "2.7"
+# python:
+#     - "2.7"
+before_install:
+    - echo ==RODAN========================================
+    - pwd
+    - ls -al
+    - apt install libpq-dev python-dev
 install: 
     - pip install https://www.djangoproject.com/download/1.7.b4/tarball/
     - pip install -r requirements.txt
