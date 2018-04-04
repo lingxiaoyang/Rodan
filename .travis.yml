@@ -19,7 +19,9 @@ before_install:
     - echo ==RODAN========================================
     - pwd
     - ls -al
-    - apt install libpq-dev python-dev
+    
+    - sudo apt update
+    - sudo apt install libpq-dev python-dev
 install: 
     - pip install https://www.djangoproject.com/download/1.7.b4/tarball/
     - pip install -r requirements.txt
