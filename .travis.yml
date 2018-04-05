@@ -1,6 +1,6 @@
 
 language: python
-cache: pip
+# cache: pip
 matrix:
     include:
       - os: linux
@@ -21,7 +21,7 @@ before_install:
     - ls -al
     
     - sudo apt-get update -y
-    - sudo apt-get install -y libpq-dev python-dev
+    - sudo apt-get install -y libpq-dev python-dev build-essential 
 install: 
     - pip install https://www.djangoproject.com/download/1.7.b4/tarball/
     - pip install psycopg2
@@ -29,7 +29,7 @@ install:
 before_script: 
     - mv rodan/settings.py.development rodan/settings.py
     - python manage.py makemigrations rodan
-    - python manage.py migrate --noinput
+    - python manage.py migrate # --noinput
 script: python manage.py test
 
 
