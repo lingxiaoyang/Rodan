@@ -21,6 +21,8 @@ before_install:
   - sudo /etc/init.d/postgresql stop
   - sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3 postgresql-plpython-9.3
   - sudo pip install redis
+  - sudo redis-server &
+  # - sudo redis-server /etc/redis/redis.conf --port 6379
   # - sudo apt-get install -y postgresql-plpython-${PG_MAJOR}
   # - sudo apt-get install -y libpq-dev python-dev build-essential 
     
