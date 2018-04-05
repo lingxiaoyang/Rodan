@@ -21,7 +21,7 @@ before_install:
     - ls -al
     
     - sudo apt-get update -y
-    - sudo apt-get install -y libpq-dev python-dev postgresql postgresql-contrib
+    - sudo apt-get install -y libpq-dev python-dev
 install: 
     - pip install https://www.djangoproject.com/download/1.7.b4/tarball/
     - pip install psycopg2
