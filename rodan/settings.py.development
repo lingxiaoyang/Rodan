@@ -320,7 +320,7 @@ CORS_EXPOSE_HEADERS = (
 WEBSOCKET_URL = '/ws/'
 WSGI_APPLICATION = 'ws4redis.django_runserver.application'
 WS4REDIS_CONNECTION = {
-    'host': 'redis',
+    'host': 'localhost',
     'port': 6379,
     'db': 0,
 }
