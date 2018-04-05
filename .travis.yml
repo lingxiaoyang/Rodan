@@ -31,4 +31,7 @@ before_script:
     - python manage.py makemigrations rodan
     - python manage.py migrate --noinput
 script: python manage.py test
-# script: echo 'hello'
+
+
+notifications:
+  email: false
