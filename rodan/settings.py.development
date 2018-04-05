@@ -96,6 +96,22 @@ DIVA_JPEG2000_CONVERTER_OUTPUT = 'JPEG2000 Image'
 RODAN_JOB_PACKAGES = (
     "rodan.jobs.resource_distributor",
     "rodan.jobs.helloworld",
+    "rodan.test.models.test_connection",
+    "rodan.test.models.test_input",
+    "rodan.test.models.test_inputport",
+    "rodan.test.models.test_inputporttype",
+    "rodan.test.models.test_job",
+    "rodan.test.models.test_output",
+    "rodan.test.models.test_outputport",
+    "rodan.test.models.test_outputporttype",
+    "rodan.test.models.test_project",
+    "rodan.test.models.test_resource",
+    "rodan.test.models.test_result",
+    "rodan.test.models.test_runjob",
+    "rodan.test.models.test_userpreference",
+    "rodan.test.models.test_workflow",
+    "rodan.test.models.test_workflowjob",
+    "rodan.test.models.test_workflowrun",
 )
 # Jobs that depend on binaries.
 # If None, Rodan will call `which gm` to find it.
