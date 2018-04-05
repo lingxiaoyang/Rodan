@@ -19,9 +19,9 @@ before_install:
     - echo Before_Install==========================================
     - pwd
     - ls -al
-    # - sudo apt-get update -y
+    - sudo apt-get update -y
     
-    - sudo apt-cache depends postgresql-plpython
+    - sudo apt-get install -y postgresql postgresql-contrib postgresql-plpython
     # - sudo apt-get install -y postgresql-plpython-${PG_MAJOR}
     # - sudo apt-get install -y libpq-dev python-dev build-essential 
     
