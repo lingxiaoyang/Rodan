@@ -24,7 +24,7 @@ before_install:
     - sudo apt-get install -y libpq-dev python-dev build-essential 
 install: 
     # - pip install https://www.djangoproject.com/download/1.7.b4/tarball/
-    - pip install psycopg2==2.5.6
+    - pip install psycopg2==2.5.5
     - pip install -r requirements.txt
 before_script: 
     - mv rodan/settings.py.development rodan/settings.py
