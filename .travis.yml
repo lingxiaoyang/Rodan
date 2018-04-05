@@ -29,6 +29,7 @@ before_install:
 install: 
     - echo Install=================================================
     - pip install psycopg2==2.7.1
+    - pip install redis
     - pip install -r requirements.txt
     
 before_script: 
