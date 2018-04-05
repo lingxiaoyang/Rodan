@@ -29,6 +29,6 @@ install:
 before_script: 
     - mv rodan/settings.py.development rodan/settings.py
     - python manage.py makemigrations rodan
-    - python manage.py syncdb --noinput
+    - python manage.py migrate --noinput
 script: python manage.py test
 # script: echo 'hello'
