@@ -1,7 +1,7 @@
 language: python
 cache: pip
-# services: 
-#   - redis-server
+services: 
+  - redis-server
   # - rabbitmq
 # git:
 #   submodules: false
