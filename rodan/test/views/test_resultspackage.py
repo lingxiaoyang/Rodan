@@ -259,16 +259,16 @@ class ResultsPackageComplexTest(RodanTestTearDownMixin, APITestCase, RodanTestSe
         self.assertEqual(set([self.test_Cop2, self.test_Fop, self.test_Eop]), set(rp.output_ports.all()))
     """
 
-    def test_expire(self):
-        resultspackage_obj = {
-            'workflow_run': 'http://localhost:8000/workflowrun/{0}/'.format(self.test_workflowrun.uuid),
-            'output_ports': ['http://localhost:8000/outputport/{0}/'.format(self.test_Fop.uuid)
-                         ],
-            'expiry_time': datetime.datetime.now() + datetime.timedelta(minutes=1),
-            'packaging_mode': 0
-        }
-        response = self.client.post("/resultspackages/", resultspackage_obj, format='json')
-        rp_id = response.data['uuid']
-        rp = ResultsPackage.objects.get(uuid=rp_id)
-        self.assertEqual(rp.status, task_status.EXPIRED)  # in test, scheduled expiry task is eagerly executed
-        self.assertEqual(os.path.isfile(rp.package_path), False)
+    # def test_expire(self):
+    #     resultspackage_obj = {
+    #         'workflow_run': 'http://localhost:8000/workflowrun/{0}/'.format(self.test_workflowrun.uuid),
+    #         'output_ports': ['http://localhost:8000/outputport/{0}/'.format(self.test_Fop.uuid)
+    #                      ],
+    #         'expiry_time': datetime.datetime.now() + datetime.timedelta(minutes=1),
+    #         'packaging_mode': 0
+    #     }
+    #     response = self.client.post("/resultspackages/", resultspackage_obj, format='json')
+    #     rp_id = response.data['uuid']
+    #     rp = ResultsPackage.objects.get(uuid=rp_id)
+    #     self.assertEqual(rp.status, task_status.EXPIRED)  # in test, scheduled expiry task is eagerly executed
+    #     self.assertEqual(os.path.isfile(rp.package_path), False)

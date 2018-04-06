@@ -180,25 +180,25 @@ class ResourceProcessingTestCase(RodanTestTearDownMixin, APITestCase, RodanTestS
         self.setUp_basic_workflow()
         self.client.force_authenticate(user=self.test_user)
 
-    def test_post_image(self):
-        file_obj = StringIO()
-        image = Image.new("RGBA", size=(50, 50), color=(256, 0, 0))
-        image.save(file_obj, 'png')
-        file_obj.name = 'page1.png'
-        file_obj.seek(0)
-        rt = ResourceType.objects.get(mimetype='image/rgb+png')
-        resource_obj = {
-            'project': "http://localhost:8000/project/{0}/".format(self.test_project.uuid),
-            'files': [
-                file_obj
-            ],
-            'type': "http://localhost:8000/resourcetype/{0}/".format(rt.uuid),
-        }
-        response = self.client.post("/resources/", resource_obj, format='multipart', resource_type=rt)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.test_resource1 = Resource.objects.get(pk=response.data[0]['uuid'])
-        self.assertNotEqual(self.test_resource1.resource_file.path, '')
-        self.assertEqual(self.test_resource1.resource_type.mimetype, 'image/rgb+png')
+    # def test_post_image(self):
+    #     file_obj = StringIO()
+    #     image = Image.new("RGBA", size=(50, 50), color=(256, 0, 0))
+    #     image.save(file_obj, 'png')
+    #     file_obj.name = 'page1.png'
+    #     file_obj.seek(0)
+    #     rt = ResourceType.objects.get(mimetype='image/rgb+png')
+    #     resource_obj = {
+    #         'project': "http://localhost:8000/project/{0}/".format(self.test_project.uuid),
+    #         'files': [
+    #             file_obj
+    #         ],
+    #         'type': "http://localhost:8000/resourcetype/{0}/".format(rt.uuid),
+    #     }
+    #     response = self.client.post("/resources/", resource_obj, format='multipart', resource_type=rt)
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    #     self.test_resource1 = Resource.objects.get(pk=response.data[0]['uuid'])
+    #     self.assertNotEqual(self.test_resource1.resource_file.path, '')
+    #     self.assertEqual(self.test_resource1.resource_type.mimetype, 'image/rgb+png')
 
     def test_post_image_claiming_txt(self):
         file_obj = StringIO()
