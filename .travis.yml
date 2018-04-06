@@ -2,13 +2,11 @@ language: python
 cache: pip
 services:
 - redis-server
-
 matrix:
   include:
   - os: linux
     sudo: required
     python: 2.7
-    
 before_install:
 - echo before_install==========================================
 - pwd
@@ -28,6 +26,8 @@ before_script:
 - python manage.py makemigrations rodan
 - python manage.py migrate
 script: python manage.py test
-
 notifications:
   email: false
+env:
+  global:
+    secure: LYfkhGgQUznhbCrTADYV/o+kJxTT0M3JIozjlldml1nm21PmCyTNOxp2isxByCd9moDOVaHDmpn2CGo2gHBLn3fD5ZY1E17fm5AkODZV7zomLqlsn2tmtcNkgmsVJ4hm7peuyG3I8S5Odr44UQQ8AM5KO9WSp9Trsk0Tjn+odu8=

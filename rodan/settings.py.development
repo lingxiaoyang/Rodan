@@ -36,7 +36,7 @@ USE_L10N = True
 # If you set this to False, Django will not use timezone-aware datetimes.
 USE_TZ = True
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'ynCz2pnA4FoSwDbnUZisS7qENcRfJB0rvNyS1dM6GFxAXJDBq8'
+SECRET_KEY = os.getenv('DJANGO__SECRET_KEY')
 # Installed apps
 INSTALLED_APPS = (
     'django.contrib.admin',
