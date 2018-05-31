@@ -29,7 +29,7 @@ script: python manage.py test
 notifications:
   email: false
   slack:
-    secure: vX67ciffwUwl2JslPtdEIjc/UY5rsc66+iMnoiNGepG3uQAE9kH5Kk1CWfoV+oCT0Hx9+vacZA5lhpQPPHYAvJGpF01GEVmJGwOtoMMrtSZzCrFYmeHcf9KFu5Fz3MAEYb00wzUVqV+7p/Pc6l9nY5RdT8KYB3esIoEBgpUMXe8=
+    secure: qm7cJAANzXtgASUWT+QltjTpRVgYh0cr7j2D+RTcYZsVE1zeF355HmBE6ENVS9vwt81CgcCjxvFOJulAfpVxMmfq8ZXiUzeIcQZbXYx9nZV8QEgxAz0hFypfk3aiGfhXsi/f5hQuH46zJHCR0ZvmBV4wzXkErq3v+fBmFuiVR0E=
 env:
   global:
     secure: LYfkhGgQUznhbCrTADYV/o+kJxTT0M3JIozjlldml1nm21PmCyTNOxp2isxByCd9moDOVaHDmpn2CGo2gHBLn3fD5ZY1E17fm5AkODZV7zomLqlsn2tmtcNkgmsVJ4hm7peuyG3I8S5Odr44UQQ8AM5KO9WSp9Trsk0Tjn+odu8=
