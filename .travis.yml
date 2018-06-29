@@ -1,3 +1,4 @@
+if: (branch = master AND type IN (pull_request, cron)) OR (branch = develop)
 language: python
 cache: pip
 services:
