@@ -3,7 +3,7 @@ from rest_framework import permissions
 import django_filters
 from rodan.models import WorkflowJobGroupCoordinateSet
 from rodan.serializers.workflowjobgroupcoordinateset import (
-    WorkflowJobGroupCoordinateSetSerializer
+    WorkflowJobGroupCoordinateSetSerializer,
 )
 from rodan.permissions import CustomObjectPermissions
 

@@ -37,6 +37,7 @@ TEST = "test" in sys.argv
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 if TEST and not DEBUG:
     from django.core.exceptions import ImproperlyConfigured
+
     raise ImproperlyConfigured("Testing requires DEBUG=True")
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -262,7 +263,6 @@ MIDDLEWARE_CLASSES = [
     "django.middleware.gzip.GZipMiddleware",
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     # [WIP] Middleware-DEBUG
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
@@ -271,7 +271,7 @@ FILE_UPLOAD_HANDLERS = ["django.core.files.uploadhandler.TemporaryFileUploadHand
 # REST framework
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework.authentication.BasicAuthentication", # [TODO] - Make token auth the only auth.
+        "rest_framework.authentication.BasicAuthentication",  # [TODO] - Make token auth the only auth.
         "rest_framework.authentication.TokenAuthentication",
     ),
     "DEFAULT_RENDERER_CLASSES": (
@@ -309,15 +309,15 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
 CORS_EXPOSE_HEADERS = ["Set-Cookie", "Vary", "Date"]
 CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
 ]
 
 ###############################################################################
@@ -398,7 +398,4 @@ if TEST:
 # 3.c  Docker Health Checks
 ###############################################################################
 
-HEALTH_CHECK = {
-    'DISK_USAGE_MAX': 90,  # percent
-    'MEMORY_MIN': 100,    # in MB
-}
+HEALTH_CHECK = {"DISK_USAGE_MAX": 90, "MEMORY_MIN": 100}  # percent  # in MB

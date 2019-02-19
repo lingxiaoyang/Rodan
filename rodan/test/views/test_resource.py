@@ -109,8 +109,7 @@ class ResourceViewTestCase(RodanTestTearDownMixin, APITestCase, RodanTestSetUpMi
         res_list = response.data["results"]
         self.assertEqual(len(res_list), 2)
         self.assertEqual(
-            set([r["uuid"] for r in res_list]),
-            set(map(str, [res1b.uuid, res1c.uuid])),
+            set([r["uuid"] for r in res_list]), set(map(str, [res1b.uuid, res1c.uuid]))
         )
 
         response = self.client.get(
@@ -145,10 +144,12 @@ class ResourceViewTestCase(RodanTestTearDownMixin, APITestCase, RodanTestSetUpMi
         r3 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt)
         r4 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt)
         rl_obj = {
-            "resources": list(map(
-                lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
-                [r1, r2, r3],
-            )),
+            "resources": list(
+                map(
+                    lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
+                    [r1, r2, r3],
+                )
+            ),
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
             ),

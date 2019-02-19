@@ -46,7 +46,7 @@ from rodan.views.workflowjobcoordinateset import WorkflowJobCoordinateSetList
 from rodan.views.workflowjobcoordinateset import WorkflowJobCoordinateSetDetail
 from rodan.views.workflowjobgroupcoordinateset import WorkflowJobGroupCoordinateSetList
 from rodan.views.workflowjobgroupcoordinateset import (
-    WorkflowJobGroupCoordinateSetDetail
+    WorkflowJobGroupCoordinateSetDetail,
 )
 from rodan.views.taskqueue import (
     TaskQueueActiveView,

@@ -25,37 +25,37 @@ from rodan.models.resourcelist import ResourceList
 
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('name', 'enabled', 'category')
+    list_display = ("name", "enabled", "category")
 
 
 class ProjectAdmin(GuardedModelAdmin):
-    list_display = ('name', 'uuid', 'creator', 'created', 'updated')
-    readonly_fields = ('uuid',)
+    list_display = ("name", "uuid", "creator", "created", "updated")
+    readonly_fields = ("uuid",)
 
 
 class WorkflowJobAdmin(admin.ModelAdmin):
-    list_display = ('job_name', 'created', 'updated')
-    list_filter = ('workflow__name',)
+    list_display = ("job_name", "created", "updated")
+    list_filter = ("workflow__name",)
 
 
 class RunJobAdmin(admin.ModelAdmin):
-    list_display = ('job', 'created', 'updated')
+    list_display = ("job", "created", "updated")
 
 
 class WorkflowRunAdmin(admin.ModelAdmin):
-    list_display = ('workflow', 'created')
+    list_display = ("workflow", "created")
 
 
 class ResultsPackageAdmin(admin.ModelAdmin):
-    list_display = ('uuid', 'workflow_run', 'created')
+    list_display = ("uuid", "workflow_run", "created")
 
 
 class ResourceAdmin(admin.ModelAdmin):
-    list_display = ('resource_image', 'created', 'updated')
+    list_display = ("resource_image", "created", "updated")
 
 
 class ResourceListAdmin(admin.ModelAdmin):
-    list_display = ('created', 'updated')
+    list_display = ("created", "updated")
 
 
 # class UserProfileInline(admin.StackedInline):

@@ -1,6 +1,7 @@
 from pymei import XmlImport
 from gamera.core import *
 import os
+
 init_gamera()
 import pdb
 
@@ -15,11 +16,11 @@ if __name__ == "__main__":
     output_folder = args[2]
     mdoc = XmlImport.documentFromFile(input_file)
 
-    neumes = mdoc.getElementsByName('neume')
-    clefs = mdoc.getElementsByName('clef')
-    divisions = mdoc.getElementsByName('division')
-    custos = mdoc.getElementsByName('custos')
-    systems = mdoc.getElementsByName('system')
+    neumes = mdoc.getElementsByName("neume")
+    clefs = mdoc.getElementsByName("clef")
+    divisions = mdoc.getElementsByName("division")
+    custos = mdoc.getElementsByName("custos")
+    systems = mdoc.getElementsByName("system")
 
     img = load_image(args[1])
 
@@ -41,7 +42,9 @@ if __name__ == "__main__":
         uly = facs_el.getAttribute("uly").getValue()
         lrx = facs_el.getAttribute("lrx").getValue()
         lry = facs_el.getAttribute("lry").getValue()
-        rgb.draw_filled_rect((int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), systemscolour)
+        rgb.draw_filled_rect(
+            (int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), systemscolour
+        )
 
     for neume in neumes:
         facs = neume.getAttribute("facs").getValue()
@@ -50,11 +53,18 @@ if __name__ == "__main__":
         uly = facs_el.getAttribute("uly").getValue()
         lrx = facs_el.getAttribute("lrx").getValue()
         lry = facs_el.getAttribute("lry").getValue()
-        rgb.draw_filled_rect((int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), neumecolour)
+        rgb.draw_filled_rect(
+            (int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), neumecolour
+        )
 
-        note_string = '-'.join([note.getAttribute("pname").getValue() for note in neume.getDescendantsByName('note')])
+        note_string = "-".join(
+            [
+                note.getAttribute("pname").getValue()
+                for note in neume.getDescendantsByName("note")
+            ]
+        )
 
-        print note_string
+        print(note_string)
         # rgb.draw_text((int(ulx) - 0, int(uly) - 20), note_string, RGBPixel(0,0,0), size=10, bold=True, halign="left")
         # rgb.draw_text((int(ulx) - 20, int(uly) - 50), neume.getAttribute('name').getValue(), RGBPixel(0,0,0), size=10, bold=True, halign="left")
 
@@ -65,7 +75,9 @@ if __name__ == "__main__":
         uly = facs_el.getAttribute("uly").getValue()
         lrx = facs_el.getAttribute("lrx").getValue()
         lry = facs_el.getAttribute("lry").getValue()
-        rgb.draw_filled_rect((int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), clefcolour)
+        rgb.draw_filled_rect(
+            (int(ulx) - 5, int(uly) - 5), (int(lrx) + 5, int(lry) + 5), clefcolour
+        )
 
     # for division in divisions:
     #     facs = mdoc.get_by_facs(division.facs)[0]
@@ -77,4 +89,4 @@ if __name__ == "__main__":
 
     rgb.highlight(img, RGBPixel(0, 0, 0))
 
-    rgb.save_PNG(os.path.join(output_folder, 'pitch_find.png'))
+    rgb.save_PNG(os.path.join(output_folder, "pitch_find.png"))

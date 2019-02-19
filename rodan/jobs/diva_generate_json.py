@@ -50,23 +50,18 @@ class GenerateJson(object):
             print(f)
             ignore, ext = os.path.splitext(f)
             if f.startswith("."):
-                continue    # ignore hidden files
+                continue  # ignore hidden files
 
-            if ext in ('.jp2', '.jpx'):
+            if ext in (".jp2", ".jpx"):
                 width, height = self.__img_size_jp2(os.path.join(img_dir, f))
                 print(width, height)
-            elif ext in ('.tiff', '.tif'):
+            elif ext in (".tiff", ".tif"):
                 width, height = self.__img_size_tiff(os.path.join(img_dir, f))
             else:
-                continue    # ignore anything else.
+                continue  # ignore anything else.
 
             max_zoom = self.__get_max_zoom_level(width, height)
-            im = {
-                'mx_w': width,
-                'mx_h': height,
-                'mx_z': max_zoom,
-                'fn': f
-            }
+            im = {"mx_w": width, "mx_h": height, "mx_z": max_zoom, "fn": f}
             images.append(im)
             zoomlevels.append(max_zoom)
 
@@ -87,27 +82,24 @@ class GenerateJson(object):
             page_data = []
 
             for j in range(lowest_max_zoom + 1):
-                h = self.__incorporate_zoom(im['mx_h'], lowest_max_zoom - j)
-                w = self.__incorporate_zoom(im['mx_w'], lowest_max_zoom - j)
+                h = self.__incorporate_zoom(im["mx_h"], lowest_max_zoom - j)
+                w = self.__incorporate_zoom(im["mx_w"], lowest_max_zoom - j)
                 # if the dimensions of the original image are an exact multiple of 256
                 # we need to check whether the remainder will be less than 1 pixel. If so
                 # we round down; otherwise, we round up.
                 if w % 256 < 1:
-                    c = int(math.floor(w / 256.))
+                    c = int(math.floor(w / 256.0))
                 else:
-                    c = int(math.ceil(w / 256.))
+                    c = int(math.ceil(w / 256.0))
 
                 if h % 256 < 1:
-                    r = int(math.floor(h / 256.))
+                    r = int(math.floor(h / 256.0))
                 else:
-                    r = int(math.ceil(h / 256.))
+                    r = int(math.ceil(h / 256.0))
 
-                page_data.append({
-                    'c': c,
-                    'r': r,
-                    'h': math.floor(h),
-                    'w': math.floor(w)
-                })
+                page_data.append(
+                    {"c": c, "r": r, "h": math.floor(h), "w": math.floor(w)}
+                )
 
                 t_wid[j] = t_wid[j] + w
                 t_hei[j] = t_hei[j] + h
@@ -117,39 +109,37 @@ class GenerateJson(object):
                 max_ratio = max(ratio, max_ratio)
                 min_ratio = min(ratio, min_ratio)
 
-            m_z = im['mx_z']
-            fn = im['fn']
+            m_z = im["mx_z"]
+            fn = im["fn"]
 
-            pgs.append({
-                'd': page_data,
-                'm': m_z,
-                'f': fn
-            })
+            pgs.append({"d": page_data, "m": m_z, "f": fn})
 
         for j in range(lowest_max_zoom + 1):
             a_wid.append(t_wid[j] / float(len(images)))
             a_hei.append(t_hei[j] / float(len(images)))
 
         dims = {
-            'a_wid': a_wid,
-            'a_hei': a_hei,
-            'max_w': mx_w,
-            'max_h': mx_h,
-            'max_ratio': max_ratio,
-            'min_ratio': min_ratio,
-            't_hei': t_hei,
-            't_wid': t_wid
+            "a_wid": a_wid,
+            "a_hei": a_hei,
+            "max_w": mx_w,
+            "max_h": mx_h,
+            "max_ratio": max_ratio,
+            "min_ratio": min_ratio,
+            "t_hei": t_hei,
+            "t_wid": t_wid,
         }
 
         data = {
-            'item_title': self.title,
-            'dims': dims,
-            'max_zoom': lowest_max_zoom,
-            'pgs': pgs
+            "item_title": self.title,
+            "dims": dims,
+            "max_zoom": lowest_max_zoom,
+            "pgs": pgs,
         }
 
         # write the JSON out to a file in the output directory
-        f = open(os.path.join(self.output_directory, "{0}.json".format(self.title)), 'w')
+        f = open(
+            os.path.join(self.output_directory, "{0}.json".format(self.title)), "w"
+        )
         json.dump(data, f)
         f.close()
 
@@ -157,13 +147,23 @@ class GenerateJson(object):
         # we implement our own header reader since all the existing
         # JPEG2000 libraries seem to read the entire image in, and they're
         # just tooooo sloooowww.
-        f = open(fn, 'rb')
+        f = open(fn, "rb")
         d = f.read(100)
-        startHeader = d.find('ihdr')
+        startHeader = d.find("ihdr")
         hs = startHeader + 4
         ws = startHeader + 8
-        height = ord(d[hs]) * 256 ** 3 + ord(d[hs + 1]) * 256 ** 2 + ord(d[hs + 2]) * 256 + ord(d[hs + 3])
-        width = ord(d[ws]) * 256 ** 3 + ord(d[ws + 1]) * 256 ** 2 + ord(d[ws + 2]) * 256 + ord(d[ws + 3])
+        height = (
+            ord(d[hs]) * 256 ** 3
+            + ord(d[hs + 1]) * 256 ** 2
+            + ord(d[hs + 2]) * 256
+            + ord(d[hs + 3])
+        )
+        width = (
+            ord(d[ws]) * 256 ** 3
+            + ord(d[ws + 1]) * 256 ** 2
+            + ord(d[ws + 2]) * 256
+            + ord(d[ws + 3])
+        )
         f.close()
         return (width, height)
 
@@ -177,6 +177,7 @@ class GenerateJson(object):
         # If you are dealing with TIFF files and want to make a slight optimization you
         # can move this import statement to the top of this script.
         from vipsCC import VImage
+
         im = VImage.VImage(fn)
         size = (im.Xsize(), im.Ysize())
         del im
@@ -200,7 +201,7 @@ class GenerateJson(object):
         """ Turn a string into a list of string and number chunks.
             "z23a" -> ["z", 23, "a"]
         """
-        return [self.__tryint(c) for c in re.split('([0-9]+)', s)]
+        return [self.__tryint(c) for c in re.split("([0-9]+)", s)]
 
 
 if __name__ == "__main__":
@@ -212,10 +213,7 @@ if __name__ == "__main__":
         parser.print_help()
         parser.error("You must specify a directory to process.")
 
-    opts = {
-        'input_directory': args[0],
-        'output_directory': args[1]
-    }
+    opts = {"input_directory": args[0], "output_directory": args[1]}
 
     gen = GenerateJson(**opts)
     sys.exit(gen.generate())
