@@ -70,7 +70,7 @@ class InputPort(models.Model):
         Workflow.objects.filter(pk=wf_id).update(valid=False)
 
     def __unicode__(self):
-        return u"<InputPort {0}>".format(str(self.uuid))
+        return "<InputPort {0}>".format(str(self.uuid))
 
     class Meta:
         app_label = "rodan"

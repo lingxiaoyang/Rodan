@@ -88,7 +88,7 @@ class ResultsPackage(models.Model):
         super(ResultsPackage, self).delete(*a, **k)
 
     def __unicode__(self):
-        return u"<ResultsPackage {0}>".format(str(self.uuid))
+        return "<ResultsPackage {0}>".format(str(self.uuid))
 
     class Meta:
         app_label = "rodan"

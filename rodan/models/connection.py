@@ -85,4 +85,4 @@ class Connection(models.Model):
         Workflow.objects.filter(pk=wf_id).update(valid=False)
 
     def __unicode__(self):
-        return u"<Connection {0}>".format(str(self.uuid))
+        return "<Connection {0}>".format(str(self.uuid))

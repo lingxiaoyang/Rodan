@@ -536,7 +536,7 @@ class WorkflowSerializationTestCase(
             response.data,
             {
                 "serialized": {
-                    "workflow_jobs[0].job_name": u"Job hahahaha does not exist in current Rodan installation."
+                    "workflow_jobs[0].job_name": "Job hahahaha does not exist in current Rodan installation."
                 }
             },
         )

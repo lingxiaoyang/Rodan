@@ -1,4 +1,4 @@
-import mimetypes, os, urlparse
+import mimetypes, os, urllib.parse
 from celery import registry
 from rest_framework import status
 from rest_framework import generics
@@ -76,9 +76,9 @@ class ResourceList(generics.ListCreateAPIView):
             condition &= Q(origin__run_job__workflow_run__uuid=wfrun_uuid) & (Q(inputs__isnull=True) | ~Q(inputs__run_job__workflow_run__uuid=wfrun_uuid))
 
         uploaded = self.request.query_params.get('uploaded', None)
-        if uploaded == u'True':
+        if uploaded == 'True':
             condition &= Q(origin__isnull=True)
-        elif uploaded == u'False':
+        elif uploaded == 'False':
             condition &= Q(origin__isnull=False)
 
         # finding the resourcelist query parameter and adding it to the condition
@@ -109,13 +109,13 @@ class ResourceList(generics.ListCreateAPIView):
         if claimed_mimetype:
             try:
                 # try to see if user provide a url to ResourceType
-                path = urlparse.urlparse(claimed_mimetype).path  # convert to relative url
+                path = urllib.parse.urlparse(claimed_mimetype).path  # convert to relative url
                 match = resolve(path)                            # find a url route
                 restype_pk = match.kwargs.get('pk')              # extract pk
                 restype_obj = ResourceType.objects.get(pk=restype_pk)   # find object
                 claimed_mimetype = restype_obj.mimetype          # find mimetype name
             except (Resolver404, ResourceType.DoesNotExist) as e:
-                print str(e)
+                print(str(e))
 
 
         initial_data = {
@@ -159,13 +159,13 @@ class ResourceDetail(generics.RetrieveUpdateDestroyAPIView):
         if resource_type:
             try:
                 # try to see if user provide a url to ResourceType
-                path = urlparse.urlparse(resource_type).path  # convert to relative url
+                path = urllib.parse.urlparse(resource_type).path  # convert to relative url
                 match = resolve(path)                            # find a url route
                 restype_pk = match.kwargs.get('pk')              # extract pk
                 restype_obj = ResourceType.objects.get(pk=restype_pk)   # find object
                 claimed_mimetype = restype_obj.mimetype          # find mimetype name
             except (Resolver404, ResourceType.DoesNotExist) as e:
-                print str(e)
+                print(str(e))
             if claimed_mimetype.startswith('image'):
                 registry.tasks['rodan.core.create_diva'].si(resource.uuid).apply_async()
 

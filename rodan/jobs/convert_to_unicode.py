@@ -4,11 +4,11 @@ import collections
 
 
 def convert_to_unicode(data):
-    if isinstance(data, basestring):
-        return unicode(data)
+    if isinstance(data, str):
+        return str(data)
     elif isinstance(data, collections.Mapping):
-        return dict(map(convert_to_unicode, data.iteritems()))
+        return dict(list(map(convert_to_unicode, iter(data.items()))))
     elif isinstance(data, collections.Iterable):
-        return type(data)(map(convert_to_unicode, data))
+        return type(data)(list(map(convert_to_unicode, data)))
     else:
         return data

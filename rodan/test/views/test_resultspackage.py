@@ -42,7 +42,7 @@ class ResultsPackageViewTest(RodanTestTearDownMixin, APITestCase, RodanTestSetUp
         }
         response = self.client.post("/resultspackages/", resultspackage_obj, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, {'output_ports': [u'Invalid hyperlink - Object does not exist.']})
+        self.assertEqual(response.data, {'output_ports': ['Invalid hyperlink - Object does not exist.']})
 
     def test_post_invalid_status(self):
         wfr = mommy.make("rodan.WorkflowRun", status=task_status.FINISHED)
@@ -59,7 +59,7 @@ class ResultsPackageViewTest(RodanTestTearDownMixin, APITestCase, RodanTestSetUp
             response.data,
             {
                 "status": [
-                    u"Cannot create a cancelled, failed, finished or expired ResultsPackage."
+                    "Cannot create a cancelled, failed, finished or expired ResultsPackage."
                 ]
             },
         )
@@ -142,7 +142,7 @@ class ResultsPackageSimpleTest(RodanTestTearDownMixin, APITestCase, RodanTestSet
         self.assertEqual(os.path.isfile(rp.package_path), True)
         with zipfile.ZipFile(rp.package_path, 'r') as z:
             files = z.namelist()
-        files = filter(lambda f: f not in bag_metadata, files)
+        files = [f for f in files if f not in bag_metadata]
         self.assertEqual(len(files), 2)
         #print files
         # TODO: test file names
@@ -161,7 +161,7 @@ class ResultsPackageSimpleTest(RodanTestTearDownMixin, APITestCase, RodanTestSet
         self.assertEqual(os.path.isfile(rp.package_path), True)
         with zipfile.ZipFile(rp.package_path, 'r') as z:
             files = z.namelist()
-        files = filter(lambda f: f not in bag_metadata, files)
+        files = [f for f in files if f not in bag_metadata]
         self.assertEqual(len(files), 1)
         #print files
         # TODO: test file names
@@ -175,7 +175,7 @@ class ResultsPackageSimpleTest(RodanTestTearDownMixin, APITestCase, RodanTestSet
         }
         response = self.client.post("/resultspackages/", resultspackage_obj, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data, {u'non_field_errors': ["Confliction between WorkflowRun and OutputPort: OutputPort {0} not in WorkflowRun {1}'s Workflow.".format(invalid_op.uuid, self.test_workflowrun.uuid)]})
+        self.assertEqual(response.data, {'non_field_errors': ["Confliction between WorkflowRun and OutputPort: OutputPort {0} not in WorkflowRun {1}'s Workflow.".format(invalid_op.uuid, self.test_workflowrun.uuid)]})
 
 
 class ResultsPackageComplexTest(RodanTestTearDownMixin, APITestCase, RodanTestSetUpMixin):
@@ -261,7 +261,7 @@ class ResultsPackageComplexTest(RodanTestTearDownMixin, APITestCase, RodanTestSe
         self.assertEqual(os.path.isfile(rp.package_path), True)
         with zipfile.ZipFile(rp.package_path, 'r') as z:
             files = z.namelist()
-        files = filter(lambda f: f not in bag_metadata, files)
+        files = [f for f in files if f not in bag_metadata]
         self.assertEqual(len(files), 10)
         #print files
         # TODO: test file names

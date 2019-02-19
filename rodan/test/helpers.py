@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from rodan.models import Job, ResourceType
 from django.core.files.base import ContentFile
 from django.conf import settings
+import importlib
 
 
 class RodanTestSetUpMixin(object):
@@ -26,7 +27,7 @@ class RodanTestSetUpMixin(object):
         import rodan.jobs.load  # just test if they are defined correctly and make no errors. Jobs are initialized by Celery thread.
         import rodan.test.dummy_jobs
 
-        reload(rodan.test.dummy_jobs)
+        importlib.reload(rodan.test.dummy_jobs)
 
     def setUp_user(self):
         self.test_user = User.objects.create_user(
@@ -350,8 +351,8 @@ class RodanTestSetUpMixin(object):
         # print "self.test_Eip2", self.url(self.test_Eip2)
         # print "self.test_Dip3", self.url(self.test_Dip3)
         return {
-            self.url(self.test_Dip1): map(self.url, self.test_resourcecollection),
-            self.url(self.test_Fip1): map(self.url, self.test_resourcecollection),
+            self.url(self.test_Dip1): list(map(self.url, self.test_resourcecollection)),
+            self.url(self.test_Fip1): list(map(self.url, self.test_resourcecollection)),
             self.url(self.test_Aip): [self.url(self.test_resource)],
             self.url(self.test_Eip2): [self.url(self.test_resource)],
             self.url(self.test_Dip3): [self.url(self.test_resourcelist)],

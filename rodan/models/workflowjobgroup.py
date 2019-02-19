@@ -41,7 +41,7 @@ class WorkflowJobGroup(models.Model):
     updated = models.DateTimeField(auto_now=True, db_index=True)
 
     def __unicode__(self):
-        return u"<WorkflowJobGroup {0}>".format(str(self.uuid))
+        return "<WorkflowJobGroup {0}>".format(str(self.uuid))
 
     class Meta:
         app_label = "rodan"

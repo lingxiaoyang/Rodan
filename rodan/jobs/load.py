@@ -85,15 +85,15 @@ for rt in ResourceType.objects.all():
         "extension": rt.extension,
     }
 def multiple_choice(field_name):
-    print "  Multiple {0}s are found"
+    print("  Multiple {0}s are found")
 
-for mimetype, definitions in resourcetypes.iteritems():
+for mimetype, definitions in resourcetypes.items():
     if len(definitions) == 0: continue
     if mimetype not in registered_rts: # If not yet exist in DB:
         if not UPDATE_JOBS:
             raise ImproperlyConfigured('The catalogue of local ResourceTypes does not match the ones in database: local ResourceType `{0}` has not been registered. Please run `manage.py migrate` on Rodan server to update the database.')
         else:
-            print "Adding {0}...  ".format(mimetype),
+            print("Adding {0}...  ".format(mimetype), end=' ')
             possible_descriptions = {}
             possible_extensions = {}
             for d in definitions:
@@ -106,73 +106,73 @@ for mimetype, definitions in resourcetypes.iteritems():
                         possible_extensions[d['extension']] = []
                     possible_extensions[d['extension']].append(d['package_name'])
 
-            if len(possible_descriptions.keys()) == 0:
+            if len(list(possible_descriptions.keys())) == 0:
                 description = ''
-            elif len(possible_descriptions.keys()) == 1:
-                description = possible_descriptions.keys()[0]
+            elif len(list(possible_descriptions.keys())) == 1:
+                description = list(possible_descriptions.keys())[0]
             else:
-                print "\n  Multiple descriptions found for {0}:".format(mimetype)
+                print("\n  Multiple descriptions found for {0}:".format(mimetype))
                 choices = []
-                for idx, tup in enumerate(possible_descriptions.iteritems()):
+                for idx, tup in enumerate(possible_descriptions.items()):
                     desc, packages = tup
                     choices.append(desc)
-                    print "    #{0}: {1} (from {2})".format(idx+1, desc, ", ".join(packages))
-                answer = raw_input("  Choose a description (#1, #2, ...) or enter yours: ")
+                    print("    #{0}: {1} (from {2})".format(idx+1, desc, ", ".join(packages)))
+                answer = input("  Choose a description (#1, #2, ...) or enter yours: ")
                 if answer.startswith('#') and answer[1:].isdigit() and 0 < int(answer[1:]) <= len(choices):
                     description = choices[int(answer[1:])-1]
-                    print "Your choice: {0}".format(description)
+                    print("Your choice: {0}".format(description))
                 else:
                     description = answer
 
-            if len(possible_extensions.keys()) == 0:
+            if len(list(possible_extensions.keys())) == 0:
                 extension = ''
-            elif len(possible_extensions.keys()) == 1:
-                extension = possible_extensions.keys()[0]
+            elif len(list(possible_extensions.keys())) == 1:
+                extension = list(possible_extensions.keys())[0]
             else:
-                print "\n  Multiple extensions found for {0}:".format(mimetype)
+                print("\n  Multiple extensions found for {0}:".format(mimetype))
                 choices = []
-                for idx, tup in enumerate(possible_extensions.iteritems()):
+                for idx, tup in enumerate(possible_extensions.items()):
                     ext, packages = tup
                     choices.append(ext)
-                    print "    #{0}: {1} (from {2})".format(idx+1, ext, ", ".join(packages))
-                answer = raw_input("  Choose an extension (#1, #2, ...) or enter yours: ")
+                    print("    #{0}: {1} (from {2})".format(idx+1, ext, ", ".join(packages)))
+                answer = input("  Choose an extension (#1, #2, ...) or enter yours: ")
                 if answer.startswith('#') and answer[1:].isdigit() and 0 < int(answer[1:]) <= len(choices):
                     extension = choices[int(answer[1:])-1]
-                    print "Your choice: {0}".format(extension)
+                    print("Your choice: {0}".format(extension))
                 else:
                     extension = answer
 
             r = ResourceType.objects.create(mimetype=mimetype,
                                             description=description,
                                             extension=extension)
-            print "Added {0} with description='{1}' and extension='{2}'".format(r.mimetype, r.description, r.extension)
+            print("Added {0} with description='{1}' and extension='{2}'".format(r.mimetype, r.description, r.extension))
     else:  # exist in DB. Don't touch ([TODO]: for now, perhaps we want the server maintainer to change it somehow...)
         del registered_rts[mimetype]
 
 ## delete removed ones
 if registered_rts:  # if there are still registered ones
     if not UPDATE_JOBS:
-        raise ImproperlyConfigured("The following ResourceTypes are in database but not registered in the code. Perhaps they have been deleted in the code but not in the database. Try to run `manage.py migrate` to confirm deleting them:\n{0}".format('\n'.join(registered_rts.keys())))
+        raise ImproperlyConfigured("The following ResourceTypes are in database but not registered in the code. Perhaps they have been deleted in the code but not in the database. Try to run `manage.py migrate` to confirm deleting them:\n{0}".format('\n'.join(list(registered_rts.keys()))))
     else:
-        for mimetype, info in registered_rts.iteritems():
-            confirm_delete = raw_input("ResourceType `{0}` is in database but not registered in the code. Perhaps it has been deleted in the code but not yet in the database. Confirm deletion (y/N)? ".format(mimetype))
+        for mimetype, info in registered_rts.items():
+            confirm_delete = input("ResourceType `{0}` is in database but not registered in the code. Perhaps it has been deleted in the code but not yet in the database. Confirm deletion (y/N)? ".format(mimetype))
             if confirm_delete.lower() == 'y':
                 try:
                     ResourceType.objects.get(mimetype=mimetype).delete()
-                    print "  ..deleted.\n\n"
+                    print("  ..deleted.\n\n")
                 except Exception as e:
-                    confirm_delete = raw_input("  ..not deleted because of an exception: {0}. Perhaps there are Resources or ResourceLists using this ResourceType. Confirm deletion of related Resources (y/N)? ".format(str(e)))
+                    confirm_delete = input("  ..not deleted because of an exception: {0}. Perhaps there are Resources or ResourceLists using this ResourceType. Confirm deletion of related Resources (y/N)? ".format(str(e)))
                     if confirm_delete.lower() == 'y':
                         try:
                             Resource.objects.filter(resource_type__mimetype=mimetype).delete()
                             ResourceType.objects.get(mimetype=mimetype).delete()
-                            print "  ..deleted. OK\n\n"
+                            print("  ..deleted. OK\n\n")
                         except Exception as e:
-                            print "  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e))
+                            print("  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e)))
                     else:
-                        print "  ..not deleted.\n\n"
+                        print("  ..not deleted.\n\n")
             else:
-                print "  ..not deleted.\n\n"
+                print("  ..not deleted.\n\n")
 
 
 
@@ -198,21 +198,21 @@ if job_list:  # there are database jobs that are not registered. Should delete t
         raise ImproperlyConfigured("The following jobs are in database but not registered in the code. Perhaps they have been deleted in the code but not in the database. Try to run `manage.py migrate` to confirm deleting them:\n{0}".format('\n'.join(job_list)))
     else:
         for j_name in job_list:
-            confirm_delete = raw_input("Job `{0}` is in database but not registered in the code. Perhaps it has been deleted in the code but not yet in the database. Confirm deletion (y/N)? ".format(j_name))
+            confirm_delete = input("Job `{0}` is in database but not registered in the code. Perhaps it has been deleted in the code but not yet in the database. Confirm deletion (y/N)? ".format(j_name))
             if confirm_delete.lower() == 'y':
                 try:
                     Job.objects.get(name=j_name).delete()
-                    print "  ..deleted.\n\n"
+                    print("  ..deleted.\n\n")
                 except Exception as e:
-                    confirm_delete = raw_input("  ..not deleted because of an exception: {0}. Perhaps there are WorkflowJobs using this Job. Confirm deletion of related WorkflowJobs (y/N)? ".format(str(e)))
+                    confirm_delete = input("  ..not deleted because of an exception: {0}. Perhaps there are WorkflowJobs using this Job. Confirm deletion of related WorkflowJobs (y/N)? ".format(str(e)))
                     if confirm_delete.lower() == 'y':
                         try:
                             WorkflowJob.objects.filter(job__name=j_name).delete()
                             Job.objects.get(name=j_name).delete()
-                            print "  ..deleted. OK\n\n"
+                            print("  ..deleted. OK\n\n")
                         except Exception as e:
-                            print "  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e))
+                            print("  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e)))
                     else:
-                        print "  ..not deleted.\n\n"
+                        print("  ..not deleted.\n\n")
             else:
-                print "  ..not deleted.\n\n"
+                print("  ..not deleted.\n\n")

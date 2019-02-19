@@ -32,7 +32,7 @@ class ResourceList(models.Model):
         permissions = (("view_resourcelist", "View ResourceList"),)
 
     def __unicode__(self):
-        return u"<ResourceList {0}>".format(self.uuid)
+        return "<ResourceList {0}>".format(self.uuid)
 
     uuid = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     name = models.CharField(max_length=200, blank=True, null=True, db_index=True)

@@ -25,4 +25,4 @@ class Tempauthtoken(models.Model):
     )
 
     def __unicode__(self):
-        return u"<TempAuthtoken {0} {1}>".format(str(self.uuid), self.user_id)
+        return "<TempAuthtoken {0} {1}>".format(str(self.uuid), self.user_id)

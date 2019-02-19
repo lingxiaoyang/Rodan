@@ -14,7 +14,7 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework import status
 
-import urlparse
+import urllib.parse
 
 
 class UserPreferenceList(generics.ListCreateAPIView):
@@ -35,7 +35,7 @@ class UserPreferenceList(generics.ListCreateAPIView):
         user_url = request.data.get("user", None)
         if user_url:
             try:
-                path = urlparse.urlparse(user_url).path
+                path = urllib.parse.urlparse(user_url).path
                 match = resolve(path)
                 user_pk = match.kwargs.get("pk")
             except (Resolver404, User.DoesNotExist) as e:

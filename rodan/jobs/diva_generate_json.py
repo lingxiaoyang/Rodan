@@ -47,14 +47,14 @@ class GenerateJson(object):
         images = []
 
         for i, f in enumerate(files):
-            print f
+            print(f)
             ignore, ext = os.path.splitext(f)
             if f.startswith("."):
                 continue    # ignore hidden files
 
             if ext in ('.jp2', '.jpx'):
                 width, height = self.__img_size_jp2(os.path.join(img_dir, f))
-                print width, height
+                print(width, height)
             elif ext in ('.tiff', '.tif'):
                 width, height = self.__img_size_tiff(os.path.join(img_dir, f))
             else:
@@ -86,7 +86,7 @@ class GenerateJson(object):
         for im in images:
             page_data = []
 
-            for j in xrange(lowest_max_zoom + 1):
+            for j in range(lowest_max_zoom + 1):
                 h = self.__incorporate_zoom(im['mx_h'], lowest_max_zoom - j)
                 w = self.__incorporate_zoom(im['mx_w'], lowest_max_zoom - j)
                 # if the dimensions of the original image are an exact multiple of 256
@@ -126,7 +126,7 @@ class GenerateJson(object):
                 'f': fn
             })
 
-        for j in xrange(lowest_max_zoom + 1):
+        for j in range(lowest_max_zoom + 1):
             a_wid.append(t_wid[j] / float(len(images)))
             a_hei.append(t_hei[j] / float(len(images)))
 

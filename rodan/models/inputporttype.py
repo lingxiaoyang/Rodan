@@ -41,4 +41,4 @@ class InputPortType(models.Model):
     is_list = models.BooleanField(db_index=True)
 
     def __unicode__(self):
-        return u"<InputPortType {0}>".format(str(self.uuid))
+        return "<InputPortType {0}>".format(str(self.uuid))

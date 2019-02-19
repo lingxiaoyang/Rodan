@@ -23,10 +23,10 @@ class ResourceListViewTestCase(
 
     def test_create_successfully(self):
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources,
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
@@ -52,10 +52,10 @@ class ResourceListViewTestCase(
             "rodan.Resource", project=p2, resource_type=self.test_resourcetype
         )
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources + [r2],
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(p2.uuid),
         }
@@ -72,10 +72,10 @@ class ResourceListViewTestCase(
         rt2 = mommy.make("rodan.ResourceType")
         r2 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt2)
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources + [r2],
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(p2.uuid),
         }
@@ -89,10 +89,10 @@ class ResourceListViewTestCase(
 
     def test_patch_conflict_resourcetype(self):
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources,
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
@@ -105,10 +105,10 @@ class ResourceListViewTestCase(
         rt2 = mommy.make("rodan.ResourceType")
         r2 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt2)
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources + [r2],
-            ),
+            )),
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
             ),
@@ -124,10 +124,10 @@ class ResourceListViewTestCase(
 
     def test_patch_conflict_project(self):
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources,
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
@@ -142,10 +142,10 @@ class ResourceListViewTestCase(
             "rodan.Resource", project=p2, resource_type=self.test_resourcetype
         )
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources + [r2],
-            ),
+            )),
             "project": "http://localhost:8000/project/{0}/".format(p2.uuid),
         }
         response = self.client.patch(
@@ -185,10 +185,10 @@ class ResourceListViewTestCase(
 
     def test_patch_empty_resourcelist(self):
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 self.test_resources,
-            ),
+            )),
             "name": "test resource list",
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid

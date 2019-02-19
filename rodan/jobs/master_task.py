@@ -3,7 +3,7 @@ from rodan.models import UserPreference, RunJob, WorkflowRun, Input
 from rodan.constants import task_status
 from django.db.models import Q
 from django.conf import settings
-import thread
+import _thread
 
 # Read more on Django queries: https://docs.djangoproject.com/en/dev/topics/db/queries/
 
@@ -25,7 +25,7 @@ def master_task(workflow_run_id):
     + `obj.save()`
     + `obj.file_field.save(..., save=True)`
     """
-    thread_id = str(thread.get_ident())
+    thread_id = str(_thread.get_ident())
 
     # find and lock runable RunJobs
     ## 1. Get a list of Inputs that belong to perhaps runable RunJobs and have their

@@ -32,7 +32,7 @@ class ResourceType(models.Model):
     extension = models.CharField(max_length=50, blank=True, db_index=True)
 
     def __unicode__(self):
-        return u"<ResourceType {0}>".format(self.mimetype)
+        return "<ResourceType {0}>".format(self.mimetype)
 
     def delete(self, *args, **kwargs):
         # find all Resource Distributor workflowjobs that have this resourcetype as their setting and set it to default

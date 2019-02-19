@@ -23,7 +23,7 @@ class RodanMetadata(SimpleMetadata):
             if hasattr(view, "filter_class"):
                 fc = view.filter_class()
                 fields = {}
-                for k in fc.filters.keys():
+                for k in list(fc.filters.keys()):
                     things = k.rsplit("__", 1)
                     field = things[0]
                     if field not in fields:

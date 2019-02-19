@@ -24,7 +24,7 @@ from rodan.constants import task_status
 from celery import Task
 from celery.task.control import revoke
 from rodan.jobs.base import TemporaryDirectory
-from diva_generate_json import GenerateJson
+from .diva_generate_json import GenerateJson
 
 
 class create_resource(Task):
@@ -628,7 +628,7 @@ class create_workflowrun(Task):
 
         # Main:
         ress_multiple = None
-        for ip, ress in resource_assignment_dict.iteritems():
+        for ip, ress in resource_assignment_dict.items():
             if len(ress) > 1:
                 ress_multiple = ress
                 break
@@ -674,7 +674,7 @@ class create_workflowrun(Task):
         for wfjob in WorkflowJob.objects.filter(workflow=workflow):
             singleton_workflowjobs.append(wfjob)
 
-        for ip, ress in resource_assignment_dict.iteritems():
+        for ip, ress in resource_assignment_dict.items():
             if len(ress) > 1:
                 initial_wfjob = ip.workflow_job
                 traversal(initial_wfjob)
@@ -729,7 +729,7 @@ def retry_workflowrun(wfrun_id):
         rj.error_summary = ""
         rj.error_details = ""
         original_settings = {}
-        for k, v in rj.job_settings.iteritems():
+        for k, v in rj.job_settings.items():
             if not k.startswith("@"):
                 original_settings[k] = v
         rj.job_settings = original_settings
@@ -774,7 +774,7 @@ def redo_runjob_tree(rj_id):
 
         # 3. Reset status and clear interactive data
         original_settings = {}
-        for k, v in rj.job_settings.iteritems():
+        for k, v in rj.job_settings.items():
             if not k.startswith("@"):
                 original_settings[k] = v
         rj.job_settings = original_settings

@@ -41,7 +41,7 @@ class Job(models.Model):
     interactive = models.BooleanField(default=False, db_index=True)
 
     def __unicode__(self):
-        return u"<Job {0}>".format(self.name)
+        return "<Job {0}>".format(self.name)
 
     class Meta:
         app_label = "rodan"

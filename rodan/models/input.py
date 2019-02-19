@@ -60,7 +60,7 @@ class Input(models.Model):
     )
 
     def __unicode__(self):
-        return u"<Input {0}>".format(str(self.uuid))
+        return "<Input {0}>".format(str(self.uuid))
 
     @property
     def input_port_type(self):

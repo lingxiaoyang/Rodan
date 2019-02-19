@@ -109,7 +109,7 @@ class RodanTaskType(TaskType):
                     raise e
 
                 if not settings.TEST:
-                    print "Added: {0}".format(j.name)
+                    print("Added: {0}".format(j.name))
             else:
                 UPDATE_JOBS = getattr(rodan_settings, "_update_rodan_jobs", False)
                 # perform an integrity check, and update jobs if demanded.
@@ -124,9 +124,9 @@ class RodanTaskType(TaskType):
                             if confirm_update:
                                 setattr(j, field_name, new_value)
                                 j.save()
-                                print "  ..updated.\n\n"
+                                print("  ..updated.\n\n")
                             else:
-                                print "  ..not updated.\n\n"
+                                print("  ..not updated.\n\n")
 
                 check_field("author", j.author, attrs['author'])
                 check_field("description", j.description, attrs['description'])
@@ -164,9 +164,9 @@ class RodanTaskType(TaskType):
                                     if confirm_update:
                                         pt.minimum = attrs_pt['minimum']
                                         pt.save()
-                                        print "  ..updated.\n\n"
+                                        print("  ..updated.\n\n")
                                     else:
-                                        print "  ..not updated.\n\n"
+                                        print("  ..not updated.\n\n")
 
                             if attrs_pt['maximum'] != pt.maximum:
                                 if not UPDATE_JOBS:
@@ -176,9 +176,9 @@ class RodanTaskType(TaskType):
                                     if confirm_update:
                                         pt.maximum = attrs_pt['maximum']
                                         pt.save()
-                                        print "  ..updated.\n\n"
+                                        print("  ..updated.\n\n")
                                     else:
-                                        print "  ..not updated.\n\n"
+                                        print("  ..not updated.\n\n")
 
                             attrs_is_list = bool(attrs_pt.get('is_list', False))
                             if attrs_is_list != pt.is_list:
@@ -189,14 +189,14 @@ class RodanTaskType(TaskType):
                                     if confirm_update:
                                         pt.is_list = attrs_is_list
                                         pt.save()
-                                        print "  ..updated.\n\n"
+                                        print("  ..updated.\n\n")
                                     else:
-                                        print "  ..not updated.\n\n"
+                                        print("  ..not updated.\n\n")
 
 
                             resource_types = RodanTaskType._resolve_resource_types(attrs_pt['resource_types'])
-                            rt_code = set(map(lambda rt: rt.mimetype, resource_types))
-                            rt_db = set(map(lambda rt: rt.mimetype, pt.resource_types.all()))
+                            rt_code = set([rt.mimetype for rt in resource_types])
+                            rt_db = set([rt.mimetype for rt in pt.resource_types.all()])
                             if rt_code != rt_db:
                                 if not UPDATE_JOBS:
                                     raise ImproperlyConfigured("The field `{0}` of {5} Port Type `{1}` of Job `{2}` seems to be updated: {3} --> {4}. Try to run `manage.py migrate` to confirm this update.".format('resource_types', pt_name, j.name, rt_db, rt_code, msg))
@@ -205,9 +205,9 @@ class RodanTaskType(TaskType):
                                     if confirm_update:
                                         pt.resource_types.clear()
                                         pt.resource_types.add(*resource_types)
-                                        print "  ..updated.\n\n"
+                                        print("  ..updated.\n\n")
                                     else:
-                                        print "  ..not updated.\n\n"
+                                        print("  ..not updated.\n\n")
 
                             del attrs_pts[idx]
 
@@ -219,11 +219,11 @@ class RodanTaskType(TaskType):
                                 if confirm_delete:
                                     try:
                                         pt.delete()
-                                        print "  ..deleted.\n\n"
+                                        print("  ..deleted.\n\n")
                                     except Exception as e:
-                                        print "  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e))
+                                        print("  ..not deleted because of an exception: {0}. Please fix it manually.\n\n".format(str(e)))
                                 else:
-                                    print "  ..not deleted.\n\n"
+                                    print("  ..not deleted.\n\n")
 
                     if attrs_pts:  # ipt exists in code but not in database. Should be added to the database.
                         for pt in attrs_pts:
@@ -246,9 +246,9 @@ class RodanTaskType(TaskType):
                                     if len(resource_types) == 0:
                                         raise ValueError('No available resource types found for this {1}PortType: {0}'.format(pt['resource_types'], msg))
                                     i.resource_types.add(*resource_types)
-                                    print "  ..updated.\n\n"
+                                    print("  ..updated.\n\n")
                                 else:
-                                    print "  ..not updated.\n\n"
+                                    print("  ..not updated.\n\n")
 
                 check_port_types('in')
                 check_port_types('out')
@@ -268,14 +268,13 @@ class RodanTaskType(TaskType):
         Returns a list of ResourceType objects.
         """
         try:
-            mimelist = filter(value, ResourceType.objects.all().values_list('mimetype', flat=True))
+            mimelist = list(filter(value, ResourceType.objects.all().values_list('mimetype', flat=True)))
         except TypeError:
             mimelist = value
         return ResourceType.objects.filter(mimetype__in=mimelist)
 
 
-class RodanTask(Task):
-    __metaclass__ = RodanTaskType
+class RodanTask(Task, metaclass=RodanTaskType):
     abstract = True
 
     ################################
@@ -307,7 +306,7 @@ class RodanTask(Task):
             if input.resource is not None:  # If resource
                 inputs[ipt_name].append(_extract_resource(input.resource))
             elif input.resource_list is not None:  # If resource_list
-                inputs[ipt_name].append(map(lambda x: _extract_resource(x, input.resource_list.resource_type.mimetype), input.resource_list.resources.all()))
+                inputs[ipt_name].append([_extract_resource(x, input.resource_list.resource_type.mimetype) for x in input.resource_list.resources.all()])
             else:
                 raise RuntimeError("Cannot find any resource or resource list on Input {0}".format(input.uuid))
         return inputs
@@ -343,7 +342,7 @@ class RodanTask(Task):
         rj_settings = runjob.job_settings
         j_settings = Job.objects.get(name=runjob.job_name).settings
 
-        for properti, definition in j_settings.get('properties', {}).iteritems():
+        for properti, definition in j_settings.get('properties', {}).items():
             if 'enum' in definition:  # convert enum to integers
                 rj_settings[properti] = definition['enum'].index(rj_settings[properti])
 
@@ -371,7 +370,7 @@ class RodanTask(Task):
         `new_available_path()` which returns a path to a nonexist file. `test_my_task`
         method can thus create an input file and pass into the job code.
         """
-        print 'WARNING: {0}.test_my_task() is not implemented.'.format(type(self).__module__)
+        print('WARNING: {0}.test_my_task() is not implemented.'.format(type(self).__module__))
 
     #######################
     # Utilities
@@ -393,8 +392,8 @@ class RodanTask(Task):
         def __init__(self, settings_update={}, response=None):
             self.settings_update = {}
             self.response = response
-            for k, v in settings_update.iteritems():
-                if isinstance(k, basestring) and k.startswith('@'):
+            for k, v in settings_update.items():
+                if isinstance(k, str) and k.startswith('@'):
                     self.settings_update[k] = v
 
     def tempdir(self):
@@ -434,7 +433,7 @@ class RodanTask(Task):
             arg_outputs = {}
             temppath_map = {}   # retains where originally assigned paths are from... prevent jobs changing them
 
-            for opt_name, output_list in outputs.iteritems():
+            for opt_name, output_list in outputs.items():
                 if opt_name not in arg_outputs:
                     arg_outputs[opt_name] = []
                 for output in output_list:
@@ -495,7 +494,7 @@ class RodanTask(Task):
                     pass
 
                 # ensure the job has produced all output files
-                for opt_name, output_list in outputs.iteritems():
+                for opt_name, output_list in outputs.items():
                     for output in output_list:
                         if output['is_list'] is False:
                             if not os.path.isfile(output['resource_temp_path']):
@@ -506,7 +505,7 @@ class RodanTask(Task):
                                 raise RuntimeError("The job did not produce any output files for the resource list for {0}".format(opt_name))
 
                 # save outputs
-                for temppath, output in temppath_map.iteritems():
+                for temppath, output in temppath_map.items():
                     if output['is_list'] is False:
                         with open(temppath, 'rb') as f:
                             resource = Output.objects.get(uuid=output['uuid']).resource
@@ -682,7 +681,7 @@ def confirm(prompt, default=True):
     if os.environ.get("RODAN_NON_INTERACTIVE") == "true":
         return default
     else:
-        return raw_input(prompt).lower() == 'y'    
+        return input(prompt).lower() == 'y'    
 
 
 _django_template_cache = {}

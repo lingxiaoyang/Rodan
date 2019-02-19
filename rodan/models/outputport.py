@@ -74,4 +74,4 @@ class OutputPort(models.Model):
         Workflow.objects.filter(pk=wf_id).update(valid=False)
 
     def __unicode__(self):
-        return u"<OutputPort {0}>".format(str(self.uuid))
+        return "<OutputPort {0}>".format(str(self.uuid))

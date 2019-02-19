@@ -120,7 +120,7 @@ class RunJob(models.Model):
     lock = models.CharField(max_length=50, blank=True, null=True)
 
     def __unicode__(self):
-        return u"<RunJob {0} {1}>".format(str(self.uuid), self.job_name)
+        return "<RunJob {0} {1}>".format(str(self.uuid), self.job_name)
 
     @property
     def job(self):

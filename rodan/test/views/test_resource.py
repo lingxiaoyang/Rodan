@@ -4,7 +4,7 @@ from rest_framework import status
 from rodan.test.helpers import RodanTestSetUpMixin, RodanTestTearDownMixin
 from rodan.models import Resource, ResourceType
 from rodan.constants import task_status
-from StringIO import StringIO
+from io import StringIO
 from PIL import Image
 from model_mommy import mommy
 
@@ -109,7 +109,7 @@ class ResourceViewTestCase(RodanTestTearDownMixin, APITestCase, RodanTestSetUpMi
         res_list = response.data["results"]
         self.assertEqual(len(res_list), 2)
         self.assertEqual(
-            set(map(lambda r: r["uuid"], res_list)),
+            set([r["uuid"] for r in res_list]),
             set(map(str, [res1b.uuid, res1c.uuid])),
         )
 
@@ -145,10 +145,10 @@ class ResourceViewTestCase(RodanTestTearDownMixin, APITestCase, RodanTestSetUpMi
         r3 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt)
         r4 = mommy.make("rodan.Resource", project=self.test_project, resource_type=rt)
         rl_obj = {
-            "resources": map(
+            "resources": list(map(
                 lambda x: "http://localhost:8000/resource/{0}/".format(x.uuid),
                 [r1, r2, r3],
-            ),
+            )),
             "project": "http://localhost:8000/project/{0}/".format(
                 self.test_project.uuid
             ),

@@ -61,7 +61,7 @@ class Output(models.Model):
     )
 
     def __unicode__(self):
-        return u"<Output {0}>".format(str(self.uuid))
+        return "<Output {0}>".format(str(self.uuid))
 
     @property
     def output_port_type(self):

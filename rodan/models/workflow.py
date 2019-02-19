@@ -51,7 +51,7 @@ class Workflow(models.Model):
     updated = models.DateTimeField(auto_now=True, db_index=True)
 
     def __unicode__(self):
-        return u"<Workflow {0}>".format(self.name)
+        return "<Workflow {0}>".format(self.name)
 
     class Meta:
         app_label = "rodan"

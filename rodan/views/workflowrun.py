@@ -1,4 +1,4 @@
-import urlparse
+import urllib.parse
 import os
 import shutil
 from operator import itemgetter
@@ -133,7 +133,7 @@ class WorkflowRunList(generics.ListCreateAPIView):
         )
         validated_resource_assignment_dict = {}
         multiple_resource_set = None
-        for input_port, resources in resource_assignment_dict.iteritems():
+        for input_port, resources in resource_assignment_dict.items():
             # 1. InputPort is not satisfied
             h_ip = HyperlinkedIdentityField(view_name="inputport-detail")
             h_ip.queryset = InputPort.objects.all()
@@ -180,7 +180,7 @@ class WorkflowRunList(generics.ListCreateAPIView):
 
             ## There must be at most one multiple resource set
             if len(ress) > 1:
-                ress_set = set(map(lambda r: r.uuid, ress))
+                ress_set = set([r.uuid for r in ress])
                 if not multiple_resource_set:
                     multiple_resource_set = ress_set
                 else:

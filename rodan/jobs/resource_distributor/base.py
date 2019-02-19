@@ -12,7 +12,7 @@ class ResourceDistributor(RodanTask):
         "type": "object",
         "properties": {
             "Resource type": {
-                "enum": map(lambda rt: str(rt.mimetype), ResourceType.objects.all()),
+                "enum": [str(rt.mimetype) for rt in ResourceType.objects.all()],
                 "type": "string",
                 "default": "application/octet-stream",
                 "description": "Specifies the eligible resource types for input",
@@ -30,9 +30,7 @@ class ResourceDistributor(RodanTask):
             "name": "Resource input",
             "minimum": 1,
             "maximum": 1,
-            "resource_types": map(
-                lambda rt: str(rt.mimetype), ResourceType.objects.all()
-            ),
+            "resource_types": [str(rt.mimetype) for rt in ResourceType.objects.all()],
         },
     )
     output_port_types = (
@@ -40,9 +38,7 @@ class ResourceDistributor(RodanTask):
             "name": "Resource output",
             "minimum": 1,
             "maximum": 1,
-            "resource_types": map(
-                lambda rt: str(rt.mimetype), ResourceType.objects.all()
-            ),
+            "resource_types": [str(rt.mimetype) for rt in ResourceType.objects.all()],
         },
     )
 
