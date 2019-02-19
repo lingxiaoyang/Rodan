@@ -8,13 +8,13 @@ django-filter==0.11.0
 django-guardian==1.3.1
 django-health-check==2.4.0
 django-sortedm2m==1.1.1
-django-websocket-redis==0.4.4
+django-websocket-redis==0.5.2
 Django==1.8.19
 djoser==0.4.0
 djangorestframework==3.3.0
 ecdsa==0.11
 # flower==0.7.3
-flup==1.0.3.dev-20110405
+# flup==1.0.3.dev-20110405
 gevent==1.3.6
 gnureadline==6.3.3
 gunicorn==19.9.0
@@ -35,4 +35,4 @@ readline==6.2.4.1
 redis==2.10.3
 uWSGI==2.0.15
 Werkzeug==0.12.2
-wsgiref==0.1.2
+# wsgiref==0.1.2
