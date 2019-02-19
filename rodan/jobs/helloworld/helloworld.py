@@ -1,8 +1,9 @@
 from rodan.jobs.base import RodanTask
 
+
 class HelloWorld(RodanTask):
-    name = 'Hello World'
-    author = 'Ryan Bannon'
+    name = "Hello World"
+    author = "Ryan Bannon"
     description = 'Output string "Hello World"'
     settings = {}
     enabled = True
@@ -10,17 +11,27 @@ class HelloWorld(RodanTask):
     interactive = False
 
     input_port_types = (
-        {'name': 'Text input', 'minimum': 0, 'maximum': 1, 'resource_types': ['text/plain']},
+        {
+            "name": "Text input",
+            "minimum": 0,
+            "maximum": 1,
+            "resource_types": ["text/plain"],
+        },
     )
     output_port_types = (
-        {'name': 'Text output', 'minimum': 1, 'maximum': 1, 'resource_types': ['text/plain']},
+        {
+            "name": "Text output",
+            "minimum": 1,
+            "maximum": 1,
+            "resource_types": ["text/plain"],
+        },
     )
 
     def run_my_task(self, inputs, settings, outputs):
-        outfile_path = outputs['Text output'][0]['resource_path']
+        outfile_path = outputs["Text output"][0]["resource_path"]
         outfile = open(outfile_path, "w")
-        if 'Text input' in inputs:
-            infile_path = inputs['Text input'][0]['resource_path']
+        if "Text input" in inputs:
+            infile_path = inputs["Text input"][0]["resource_path"]
             infile = open(infile_path, "r")
             outfile.write(("Hello World {0}").format(infile.read()))
             infile.close()
@@ -29,45 +40,56 @@ class HelloWorld(RodanTask):
         outfile.close()
         return True
 
+
 class HelloWorldInteractive(RodanTask):
-    name = 'Hello World Interactive'
-    author = 'Ryan Bannon'
+    name = "Hello World Interactive"
+    author = "Ryan Bannon"
     description = 'Interactive "Hello World"'
     settings = {}
     enabled = True
-    category = 'Test'
+    category = "Test"
     interactive = True
     input_port_types = (
-        {'name': 'Text input', 'minimum': 0, 'maximum': 1, 'resource_types': ['text/plain']},
+        {
+            "name": "Text input",
+            "minimum": 0,
+            "maximum": 1,
+            "resource_types": ["text/plain"],
+        },
     )
     output_port_types = (
-        {'name': 'Text output', 'minimum': 1, 'maximum': 1, 'resource_types': ['text/plain']},
+        {
+            "name": "Text output",
+            "minimum": 1,
+            "maximum": 1,
+            "resource_types": ["text/plain"],
+        },
     )
 
     def get_my_interface(self, inputs, settings):
-	# Get input.
-        input = 'there was no user input file'
-        if 'Text input' in inputs:
-            infile_path = inputs['Text input'][0]['resource_path']
+        # Get input.
+        input = "there was no user input file"
+        if "Text input" in inputs:
+            infile_path = inputs["Text input"][0]["resource_path"]
             infile = open(infile_path, "r")
-            input = infile.read()	
-	    infile.close()
+            input = infile.read()
+            infile.close()
 
-	# Create data to pass.
-	data = {'input': input}
-	return ('interface.html', data)
+            # Create data to pass.
+            data = {"input": input}
+            return ("interface.html", data)
 
     def run_my_task(self, inputs, settings, outputs):
-	if '@done' not in settings:
-	    return self.WAITING_FOR_INPUT() 
-	outfile_path = outputs['Text output'][0]['resource_path']
+        if "@done" not in settings:
+            return self.WAITING_FOR_INPUT()
+        outfile_path = outputs["Text output"][0]["resource_path"]
         outfile = open(outfile_path, "w")
-        outfile.write(("Hello World {0}").format(settings['@user_input']))
-        outfile.close()	
-	return True
+        outfile.write(("Hello World {0}").format(settings["@user_input"]))
+        outfile.close()
+        return True
 
     def validate_my_user_input(self, inputs, settings, user_input):
-        return { '@done': True, '@user_input': user_input['user_input'] }
+        return {"@done": True, "@user_input": user_input["user_input"]}
 
     def my_error_information(self, exc, traceback):
-	pass
+        pass
