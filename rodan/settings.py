@@ -122,8 +122,8 @@ THUMBNAIL_EXT = "jpg"
 RODAN_WORKFLOW_SERIALIZATION_FORMAT_VERSION = 0.1
 # 30 days. NULL: never expire
 RODAN_RESULTS_PACKAGE_AUTO_EXPIRY_SECONDS = 30 * 24 * 60 * 60
-# Default: 15 seconds before the authentication token expires.
-RODAN_RUNJOB_WORKING_USER_EXPIRY_SECONDS = 15
+# Default: 999999 seconds before the authentication token expires.
+RODAN_RUNJOB_WORKING_USER_EXPIRY_SECONDS = 999999
 DIVA_JPEG2000_CONVERTER = "JPEG2000"
 DIVA_JPEG2000_CONVERTER_INPUT = "Image"
 DIVA_JPEG2000_CONVERTER_OUTPUT = "JPEG2000 Image"
@@ -176,13 +176,13 @@ LOGGING = {
         "file": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/code/Rodan/rodan.log",
+            "filename": "rodan.log",
             "formatter": "verbose",
         },
         "dblog": {
             "level": "DEBUG",
             "class": "logging.FileHandler",
-            "filename": "/code/Rodan/database.log",
+            "filename": "database.log",
             "formatter": "verbose",
         },
     },

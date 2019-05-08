@@ -1,31 +1,26 @@
-if: branch = master AND type IN (pull_request, cron) OR branch = develop
+if: branch = master AND type IN (pull_request, cron) OR branch = develop OR branch = fix-travis-config
 language: python
 cache: pip
-services:
-  - redis-server
 matrix:
   include:
   - os: linux
     sudo: required
     python: 2.7
+services:
+  - redis-server
+  # - postgresql
 before_install:
-  - sudo apt-get update -qy
-  - sudo /etc/init.d/postgresql stop
-  - sudo apt-get install -y postgresql-9.3 postgresql-contrib-9.3 postgresql-plpython-9.3
-  - sudo /etc/init.d/postgresql start 9.3
-  - sudo pip install redis
-  - sudo redis-server /etc/redis/redis.conf --port 6379
+  # Python modules
   - pip install -r requirements.txt
-  - export REDIS_HOST=localhost
-  - export POSTGRES_HOST=localhost
   - export DJANGO_SECRET_KEY=local
-  - cd ./rodan/jobs && git clone https://github.com/DDMAL/pil-rodan.git && cd ../..
-  - mkdir -p /code/Rodan
+  - sed -i 's/\/code\/Rodan\///g' ./rodan/settings.py
+  - ./helper_scripts/install.sh
+before_script:
   - python manage.py makemigrations rodan
   - python manage.py migrate
 script:
-  - python manage.py test
+  # - python manage.py test
 notifications:
   email: false
-  slack:
-    secure: k4lwPAC7c0iSBOE1qI3RCwh8Le2ar/bLyUd1kw8YD+tM8MjZEevVAjTNOUjLBahgrrPLRtgrHI3pGNh8A/i5eixW9VyxA2k03U3CBKXobP6HidCChORPdPv6xcP01qns69Qdj7PmJzN5kcVYcMdIb6T1cIEorht4Z7XMWKgcpwA=
+  # slack:
+    # secure: k4lwPAC7c0iSBOE1qI3RCwh8Le2ar/bLyUd1kw8YD+tM8MjZEevVAjTNOUjLBahgrrPLRtgrHI3pGNh8A/i5eixW9VyxA2k03U3CBKXobP6HidCChORPdPv6xcP01qns69Qdj7PmJzN5kcVYcMdIb6T1cIEorht4Z7XMWKgcpwA=
